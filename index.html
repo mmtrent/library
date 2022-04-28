@@ -9,9 +9,24 @@
     <title>Document</title>
 </head>
 <body>
-    <button id="addBook">New Book</button>
-    <div id="container">
-           
-    </div>
+    <input type="button" id="addBook" value="New Book">
+    <div id="container"></div>
+    <div class="form-popup" id="addBookForm">
+        <form class="form-container">
+          <h1>Add Book</h1>
+      
+          <label for="title"><b>Title</b></label>
+          <input type="text" placeholder="Book Title" name="title" required>
+      
+          <label for="author"><b>Author</b></label>
+          <input type="text" placeholder="Author" name="author" required>
+
+          <label for="numPages"><b>Number of Pages</b></label>
+          <input type="text" placeholder="123" name="numPages" required>
+      
+          <input type="button" id="save" class="btn" value="Save">
+          <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        </form>
+      </div>
 </body>
 </html>

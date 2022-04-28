@@ -1,14 +1,25 @@
 const container = document.querySelector('#container');
 
-/*
+function openForm() {
+    document.getElementById("addBookForm").style.display = "block";
+    container.classList.add('is-blurred');
+    addBook.classList.add('is-blurred');
+  }
+  
+  function closeForm() {
+    document.getElementById("addBookForm").style.display = "none";
+    container.classList.remove('is-blurred');
+    addBook.classList.remove('is-blurred');
+  }
+
 const addBook = document.getElementById('addBook');
-addBook.addEventListener('click', addBookToLibrary);
-addBook.addEventListener('click', addBookToLibrary);
-*/
+addBook.addEventListener('click', openForm);
 
-//let myLibrary = [];
+const saveButton = document.getElementById('save');
+saveButton.addEventListener('click', addBookToLibrary);
+saveButton.addEventListener('click', closeForm);
 
-//test library
+
 let myLibrary = [
     {
         "title": "Slaughterhouse Five",
@@ -37,57 +48,57 @@ function Book(title, author, numPages, haveRead) { // Book object constructor
     this.haveRead = haveRead;
 }
 
-/* disable for testing
 function addBookToLibrary() {
-    
-    const title = prompt('Title of Book:');
-    const author = prompt('Author of Book:');
-    const numPages = prompt('Number of pages in Book:');
-    const haveRead = prompt('Have you Read the Book? (Y/N)');
-
-
-    test input
-    const title = "Walden"
-    const author = "Thoreau"
-    const numPages = 455
-    const haveRead = true
-    
+    const title = document.getElementsByName("title")[0].value
+    const author = document.getElementsByName("author")[0].value
+    const numPages = document.getElementsByName("numPages")[0].value
+    const haveRead = false
 
     const book = new Book(title, author, numPages, haveRead);
     myLibrary.push(book);
     displayBooks();
 }
-*/
-
 
 function displayBooks() {
     container.innerText = '';
     for (let i = 0; i < myLibrary.length; i++) {
         createCard(i);
-        } 
+        }
+
     setCheckListeners();
+    setDeleteListeners();
+    console.log(myLibrary);
 }
 
-displayBooks();
-
 function createCard (i) {
+    // Create HTML card element
     const card = document.createElement('div');
-        card.classList.add('card');
-        container.appendChild(card);
-        card.innerText = ('Title: ' + myLibrary[i].title + '\n' + 'Author: ' + myLibrary[i].author
-                        + '\n' + 'Pages: ' + myLibrary[i].numPages  );
-                        const readCheck = document.createElement('div');
-        readCheck.classList.add('readCheck');
-        card.appendChild(readCheck);
-        readCheck.innerText = ("Have read: ")
+    card.classList.add('card');
+    container.appendChild(card);
 
-        const readCheckmark = document.createElement("INPUT");
-        readCheckmark.setAttribute("type", "checkbox");
-        readCheckmark.setAttribute("id", "readCheckmark" + i);
-        readCheck.appendChild(readCheckmark);
-        if (myLibrary[i].haveRead == true) {
-            document.getElementById('readCheckmark' + i).checked = true;
-        }
+    // Add book information to card
+    card.innerText = ('Title: ' + myLibrary[i].title + '\n' + 'Author: ' + myLibrary[i].author
+                    + '\n' + 'Pages: ' + myLibrary[i].numPages  );
+    
+    // Create check box to mark if book has been read or not
+    const readCheck = document.createElement('div');
+    readCheck.classList.add('readCheck');
+    card.appendChild(readCheck);
+    readCheck.innerText = ("Have read: ")
+    const readCheckmark = document.createElement("INPUT");
+    readCheckmark.setAttribute("type", "checkbox");
+    readCheckmark.setAttribute("id", "readCheckmark" + i);
+    readCheck.appendChild(readCheckmark);
+    if (myLibrary[i].haveRead == true) {
+        document.getElementById('readCheckmark' + i).checked = true;
+    }
+
+    // Create delete button to remove book object from library array
+    const deleteButton = document.createElement("INPUT");
+    deleteButton.setAttribute("type", "button");
+    deleteButton.setAttribute("id", "deleteButton" + i);
+    deleteButton.setAttribute("value", "Delete Book");
+    card.appendChild(deleteButton);
 };
 
 function setCheckListeners() {
@@ -98,13 +109,25 @@ function setCheckListeners() {
                 console.log(`Checkbox ${i} is checked.`);
                 myLibrary[i].haveRead = true;
                 console.log(myLibrary[i].haveRead)
-                //console.log(myLibrary[i].title + " is now marked as " (myLibrary[i].haveRead === true) ? "read" : "not read");
             } else {
                 console.log(`Checkbox ${i} is not checked`);
                 myLibrary[i].haveRead = false;
-                //console.log(myLibrary[i].title + " is now marked as " (myLibrary[i].haveRead === false) ? "not read" : "read");
                 console.log(myLibrary[i].haveRead)
             }
         });
     }
 }
+
+function setDeleteListeners() {
+    for (let i = 0; i < myLibrary.length; i++) {
+        eval("let deleteButton" + i + " = document.querySelector('deleteButton" + i + "')");
+        eval("deleteButton" + i).addEventListener('click', function() {
+            // delete book object from myLibrary array
+            console.log("Deleting " + myLibrary[i].title);
+            myLibrary.splice(i, 1);
+            displayBooks();
+        })
+    }
+}
+
+displayBooks();
