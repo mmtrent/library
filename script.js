@@ -37,7 +37,7 @@ function Book(title, author, numPages, haveRead) { // Book object constructor
     this.haveRead = haveRead;
 }
 
-/*
+/* disable for testing
 function addBookToLibrary() {
     
     const title = prompt('Title of Book:');
@@ -96,8 +96,14 @@ function setCheckListeners() {
         eval("readCheckmark" + i).addEventListener('change', function() {
             if (this.checked) {
                 console.log(`Checkbox ${i} is checked.`);
+                myLibrary[i].haveRead = true;
+                console.log(myLibrary[i].haveRead)
+                //console.log(myLibrary[i].title + " is now marked as " (myLibrary[i].haveRead === true) ? "read" : "not read");
             } else {
                 console.log(`Checkbox ${i} is not checked`);
+                myLibrary[i].haveRead = false;
+                //console.log(myLibrary[i].title + " is now marked as " (myLibrary[i].haveRead === false) ? "not read" : "read");
+                console.log(myLibrary[i].haveRead)
             }
         });
     }
