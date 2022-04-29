@@ -95,6 +95,8 @@ function createCard (i) {
 
     // Create delete button to remove book object from library array
     const deleteButton = document.createElement("INPUT");
+    deleteButton.classList.add('deleteButton');
+    deleteButton.classList.add('filter-white');
     deleteButton.setAttribute("type", "button");
     deleteButton.setAttribute("id", "deleteButton" + i);
     deleteButton.setAttribute("value", "Delete Book");

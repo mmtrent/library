@@ -6,22 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Library</title>
 </head>
 <body>
-    <input type="button" id="addBook" value="New Book">
+
+    <div class="header">
+      <img src="resources/bookshelf.svg">
+      <p>My Library</p>
+
+    </div>
+    <input type="button" id="addBook" value="Add Book" class="filter-white">
     <div id="container"></div>
     <div class="form-popup" id="addBookForm">
         <form class="form-container">
           <h1>Add Book</h1>
       
-          <label for="title"><b>Title</b></label>
+          <label for="title"><b>Title</b></label><br>
           <input type="text" placeholder="Book Title" name="title" required>
       
-          <label for="author"><b>Author</b></label>
+          <label for="author"><b>Author</b></label><br>
           <input type="text" placeholder="Author" name="author" required>
 
-          <label for="numPages"><b>Number of Pages</b></label>
+          <label for="numPages"><b>Number of Pages</b></label><br>
           <input type="text" placeholder="123" name="numPages" required>
       
           <input type="button" id="save" class="btn" value="Save">
