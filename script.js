@@ -1,76 +1,49 @@
-const container = document.querySelector('#container');
-
-function openForm() {
-    document.getElementById("addBookForm").style.display = "block";
-    container.classList.add('is-blurred');
-    addBook.classList.add('is-blurred');
-  }
-  
-  function closeForm() {
-    document.getElementById("addBookForm").style.display = "none";
-    container.classList.remove('is-blurred');
-    addBook.classList.remove('is-blurred');
-  }
-
-const addBook = document.getElementById('addBook');
-addBook.addEventListener('click', openForm);
-
-const saveButton = document.getElementById('save');
-saveButton.addEventListener('click', addBookToLibrary);
-saveButton.addEventListener('click', closeForm);
-
-
-let myLibrary = [
-    {
-        "title": "Slaughterhouse Five",
-        "author": "K. Vonnegut",
-        "numPages": 240,
-        "haveRead": true
-    },
-    {
-        "title": "For Whom the Bell Tolls",
-        "author": "E. Hemmingway",
-        "numPages": 480,
-        "haveRead": false
-    },
-    {
-        "title": "The Great Gatsby",
-        "author": "F. Scott Fitzgerald",
-        "numPages": 208,
-        "haveRead": true
+class Book {
+    constructor(title, author, numPages, haveRead) {
+        this.title = title;
+        this.author = author;
+        this.numPages = numPages;
+        this.haveRead = haveRead;
     }
-]
-
-function Book(title, author, numPages, haveRead) { // Book object constructor
-    this.title = title;
-    this.author = author;
-    this.numPages = numPages;
-    this.haveRead = haveRead;
 }
 
-function addBookToLibrary() {
+addBookToLibrary = () => {
     const title = document.getElementsByName("title")[0].value
     const author = document.getElementsByName("author")[0].value
     const numPages = document.getElementsByName("numPages")[0].value
     const haveRead = false
-
     const book = new Book(title, author, numPages, haveRead);
     myLibrary.push(book);
     displayBooks();
 }
 
-function displayBooks() {
+let myLibrary = [];
+
+// User Interface
+
+const openForm = () => { // Display form to add books to library when 'New Book' is clicked
+    document.getElementById("addBookForm").style.display = "block";
+    container.classList.add('is-blurred'); // Blur background to bring focus to popup form
+    addBook.classList.add('is-blurred');
+}
+
+const closeForm = () => { // Close popup form and remove bluring from main body
+    document.getElementById("addBookForm").style.display = "none";
+    container.classList.remove('is-blurred');
+    addBook.classList.remove('is-blurred');
+}
+
+const displayBooks = () => { // Reset view of books after adding a new book
     container.innerText = '';
     for (let i = 0; i < myLibrary.length; i++) {
         createCard(i);
         }
 
-    setCheckListeners();
-    setDeleteListeners();
-    console.log(myLibrary);
+    setCheckListeners(); // Add new 'Have Read' listeners for additional books
+    setDeleteListeners(); // Add new delete buttons for each additional book
 }
 
-function createCard (i) {
+const createCard = (i) => {
     // Create HTML card element
     const card = document.createElement('div');
     card.classList.add('card');
@@ -103,33 +76,36 @@ function createCard (i) {
     card.appendChild(deleteButton);
 };
 
-function setCheckListeners() {
+const setCheckListeners = () => { // Add listeners for 'Have Read' check boxes
     for (let i = 0; i < myLibrary.length; i++) {
         eval("let readCheckmark" + i + " = document.querySelector('readCheckmark" + i + "')");
         eval("readCheckmark" + i).addEventListener('change', function() {
             if (this.checked) {
-                console.log(`Checkbox ${i} is checked.`);
                 myLibrary[i].haveRead = true;
-                console.log(myLibrary[i].haveRead)
             } else {
-                console.log(`Checkbox ${i} is not checked`);
                 myLibrary[i].haveRead = false;
-                console.log(myLibrary[i].haveRead)
             }
         });
     }
 }
 
-function setDeleteListeners() {
+const  setDeleteListeners = () => {
     for (let i = 0; i < myLibrary.length; i++) {
         eval("let deleteButton" + i + " = document.querySelector('deleteButton" + i + "')");
         eval("deleteButton" + i).addEventListener('click', function() {
             // delete book object from myLibrary array
-            console.log("Deleting " + myLibrary[i].title);
             myLibrary.splice(i, 1);
             displayBooks();
         })
     }
 }
+
+const container = document.querySelector('#container'); // HTML Body container
+const addBook = document.getElementById('addBook'); // New book button
+addBook.addEventListener('click', openForm); // Open form to add new book to library
+
+const saveButton = document.getElementById('save'); // Save button on popup form
+saveButton.addEventListener('click', addBookToLibrary); // Call addBook function when save is clicked
+saveButton.addEventListener('click', closeForm); // Close popup form after book is saved
 
 displayBooks();
