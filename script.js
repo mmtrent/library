@@ -1,4 +1,4 @@
-//const Library = (() => { // Library Module
+const Library = (() => { // Library Module
 
     let myLibrary = []; // Array to store Book classes
 
@@ -10,17 +10,6 @@
             this.haveRead = haveRead;
         }
     }
-    /*
-    addBookToLibrary = () => { // Take value from 'Add Book' form and assign to variables, create new book class and push to the library array
-        const title = document.getElementsByName("title")[0].value
-        const author = document.getElementsByName("author")[0].value
-        const numPages = document.getElementsByName("numPages")[0].value
-        const haveRead = false
-        const book = new Book(title, author, numPages, haveRead);
-        myLibrary.push(book);
-        displayBooks();
-    }
-    */
 
     addBookToLibrary = (title, author, numPages) => {
         const haveRead = false;
@@ -28,8 +17,8 @@
         myLibrary.push(book);
     }
 
-    //return {myLibrary, addBookToLibrary};
-//})();
+    return {myLibrary, addBookToLibrary};
+})();
 
 // User Interface
 
@@ -47,12 +36,16 @@ const closeForm = () => { // Close popup form and remove blurring from main body
 
 const displayBooks = () => { // Reset view of books after adding a new book
     container.innerText = '';
-    for (let i = 0; i < myLibrary.length; i++) {
+    for (let i = 0; i < Library.myLibrary.length; i++) {
         createCard(i);
         }
 
     setCheckListeners(); // Add new 'Have Read' listeners for additional books
     setDeleteListeners(); // Add new delete buttons for each additional book
+
+    const saveButton = document.getElementById('save'); // Save button on popup form
+    saveButton.addEventListener('click', saveBook); 
+    saveButton.addEventListener('click', closeForm); // Close popup form after book is saved
 }
 
 const createCard = (i) => {
@@ -62,8 +55,8 @@ const createCard = (i) => {
     container.appendChild(card);
 
     // Add book information to card
-    card.innerText = ('Title: ' + myLibrary[i].title + '\n' + 'Author: ' + myLibrary[i].author
-                    + '\n' + 'Pages: ' + myLibrary[i].numPages  );
+    card.innerText = ('Title: ' + Library.myLibrary[i].title + '\n' + 'Author: ' + Library.myLibrary[i].author
+                    + '\n' + 'Pages: ' + Library.myLibrary[i].numPages  );
     
     // Create check box to mark if book has been read or not
     const readCheck = document.createElement('div');
@@ -74,7 +67,7 @@ const createCard = (i) => {
     readCheckmark.setAttribute("type", "checkbox");
     readCheckmark.setAttribute("id", "readCheckmark" + i);
     readCheck.appendChild(readCheckmark);
-    if (myLibrary[i].haveRead == true) {
+    if (Library.myLibrary[i].haveRead == true) {
         document.getElementById('readCheckmark' + i).checked = true;
     }
 
@@ -86,27 +79,30 @@ const createCard = (i) => {
     deleteButton.setAttribute("id", "deleteButton" + i);
     deleteButton.setAttribute("value", "Delete Book");
     card.appendChild(deleteButton);
+
+
+
 };
 
 const setCheckListeners = () => { // Add listeners for 'Have Read' check boxes
-    for (let i = 0; i < myLibrary.length; i++) {
+    for (let i = 0; i < Library.myLibrary.length; i++) {
         eval("let readCheckmark" + i + " = document.querySelector('readCheckmark" + i + "')"); // Iterate through library array and create "readCheckmark" variables for each book
         eval("readCheckmark" + i).addEventListener('change', function() { // Add event listeners to each book to listen for a change to the checkbox
             if (this.checked) { // If checkbox changes to 'checked,' update the library array to have the 'haveRead' field changed to true
-                myLibrary[i].haveRead = true;
+                Library.myLibrary[i].haveRead = true;
             } else { // If checkbox changes to 'unchecked,' update the library array to have the 'haveRead' field changed to false
-                myLibrary[i].haveRead = false;
+                Library.myLibrary[i].haveRead = false;
             }
         });
     }
 }
 
 const  setDeleteListeners = () => {
-    for (let i = 0; i < myLibrary.length; i++) {
+    for (let i = 0; i < Library.myLibrary.length; i++) {
         eval("let deleteButton" + i + " = document.querySelector('deleteButton" + i + "')"); // Iterate through library and create "deleteButton" variables for each book
         eval("deleteButton" + i).addEventListener('click', function() { // Add event listeners for each delete button and book
-            // delete book object from myLibrary array
-            myLibrary.splice(i, 1); // Remove entry from library array at i'th index
+            // delete book object from Library.myLibrary array
+            Library.myLibrary.splice(i, 1); // Remove entry from library array at i'th index
             displayBooks(); // Reset book display with newly modified array
         })
     }
@@ -117,16 +113,13 @@ const addBook = document.getElementById('addBook'); // New book button
 addBook.addEventListener('click', openForm); // Open form to add new book to library
 
 const saveBook = () => {
-    const title = document.getElementsByName("title")[0].value
-    const author = document.getElementsByName("author")[0].value
-    const numPages = document.getElementsByName("numPages")[0].value
-    addBookToLibrary(title, author, numPages);
+    let title = document.getElementsByName("title")[0].value
+    let author = document.getElementsByName("author")[0].value
+    let numPages = document.getElementsByName("numPages")[0].value
+    Library.addBookToLibrary(title, author, numPages);
     displayBooks();
 }
 
-const saveButton = document.getElementById('save'); // Save button on popup form
-//saveButton.addEventListener('click', Library.addBookToLibrary()); // Call addBookToLibray function when save is clicked
-saveButton.addEventListener('click', saveBook()); 
-saveButton.addEventListener('click', closeForm); // Close popup form after book is saved
+
 
 displayBooks();
