@@ -1,23 +1,35 @@
-let myLibrary = []; // Array to store Book classes
+//const Library = (() => { // Library Module
 
-class Book {
-    constructor(title, author, numPages, haveRead) {
-        this.title = title;
-        this.author = author;
-        this.numPages = numPages;
-        this.haveRead = haveRead;
+    let myLibrary = []; // Array to store Book classes
+
+    class Book {
+        constructor(title, author, numPages, haveRead) {
+            this.title = title;
+            this.author = author;
+            this.numPages = numPages;
+            this.haveRead = haveRead;
+        }
     }
-}
+    /*
+    addBookToLibrary = () => { // Take value from 'Add Book' form and assign to variables, create new book class and push to the library array
+        const title = document.getElementsByName("title")[0].value
+        const author = document.getElementsByName("author")[0].value
+        const numPages = document.getElementsByName("numPages")[0].value
+        const haveRead = false
+        const book = new Book(title, author, numPages, haveRead);
+        myLibrary.push(book);
+        displayBooks();
+    }
+    */
 
-addBookToLibrary = () => { // Take value from 'Add Book' form and assign to variables, create new book class and push to the library array
-    const title = document.getElementsByName("title")[0].value
-    const author = document.getElementsByName("author")[0].value
-    const numPages = document.getElementsByName("numPages")[0].value
-    const haveRead = false
-    const book = new Book(title, author, numPages, haveRead);
-    myLibrary.push(book);
-    displayBooks();
-}
+    addBookToLibrary = (title, author, numPages) => {
+        const haveRead = false;
+        const book = new Book (title, author, numPages, haveRead);
+        myLibrary.push(book);
+    }
+
+    //return {myLibrary, addBookToLibrary};
+//})();
 
 // User Interface
 
@@ -104,8 +116,17 @@ const container = document.querySelector('#container'); // HTML Body container
 const addBook = document.getElementById('addBook'); // New book button
 addBook.addEventListener('click', openForm); // Open form to add new book to library
 
+const saveBook = () => {
+    const title = document.getElementsByName("title")[0].value
+    const author = document.getElementsByName("author")[0].value
+    const numPages = document.getElementsByName("numPages")[0].value
+    addBookToLibrary(title, author, numPages);
+    displayBooks();
+}
+
 const saveButton = document.getElementById('save'); // Save button on popup form
-saveButton.addEventListener('click', addBookToLibrary); // Call addBook function when save is clicked
+//saveButton.addEventListener('click', Library.addBookToLibrary()); // Call addBookToLibray function when save is clicked
+saveButton.addEventListener('click', saveBook()); 
 saveButton.addEventListener('click', closeForm); // Close popup form after book is saved
 
 displayBooks();
